@@ -9,7 +9,10 @@ data class RegisterReq(
     val username: String,
     val email: String,
     val password: String,
-    val birthDate: Date,
-    val sex:Boolean,
-    val userImage:String
-)
+    val birthDate: Date?,
+    val sex:Boolean?,
+    val userImage:String?,
+    val age: Short
+) {
+
+}

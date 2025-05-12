@@ -54,7 +54,8 @@ public class AuthController {
                 passwordEncoder.encode(registerReq.getPassword()),
                 registerReq.getBirthDate(),
                 registerReq.getSex(),
-                registerReq.getUserImage()
+                registerReq.getUserImage(),
+                registerReq.getAge()
 
         );
 

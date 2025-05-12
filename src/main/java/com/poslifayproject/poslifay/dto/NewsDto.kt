@@ -10,6 +10,6 @@ data class NewsDto(
     val imageUrl:String,
     val sourcaName: String,
     val likes:Int,
-    val publishedDate:Date
+    val publishedDate:Date,
 ) {
 }

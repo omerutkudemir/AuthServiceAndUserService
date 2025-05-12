@@ -11,6 +11,9 @@ data class News(
     val title:String,
     val content: String,
     val imageURl:String,
+    @ManyToOne(fetch = FetchType.LAZY, cascade =[CascadeType.MERGE])
+    @JoinColumn(name = "sourceId")
+    val source: Source,
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "category_id")
     val category:Category,
@@ -20,6 +23,7 @@ data class News(
     val likes: List<Like>,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "comment_id")
-    val comments:List<Comment>
+    val comments:List<Comment>,
+    val newsUrl:String
 
 )

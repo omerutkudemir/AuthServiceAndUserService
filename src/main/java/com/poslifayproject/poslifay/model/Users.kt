@@ -28,6 +28,7 @@ data class Users(
     val birthDate: Date?,
     val createDate: Date?,
     val sex:Boolean,
+    val age:Short,
     val userImageUrl:String?,
     @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER) // EAGER önerilir
     @CollectionTable(
@@ -60,6 +61,7 @@ data class Users(
         accountNonLocked = true,
         credentialsNonExpired = true,
         sex=false,
+        age=0,
         userImageUrl=null
 
     )
@@ -71,7 +73,8 @@ data class Users(
         password: String,
         birthDate: Date,
         sex: Boolean,
-        userImage:String
+        userImage:String,
+        age: Short
     ) : this(
         firstName = firstName,
         lastName = lastName,
@@ -88,6 +91,7 @@ data class Users(
         accountNonLocked = true,
         credentialsNonExpired = true,
         sex=sex,
+        age=age,
         userImageUrl=userImage
     )
 

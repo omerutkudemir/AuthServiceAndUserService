@@ -17,3 +17,11 @@ data class Like(
     @JoinColumn(name = "news_id") // foreign key: hangi haber beğenilmiş
     val news: News
 )
+{
+    constructor(user: Users,news: News) : this(
+
+        id=0L,
+        user=user,
+        news=news
+    )
+}
