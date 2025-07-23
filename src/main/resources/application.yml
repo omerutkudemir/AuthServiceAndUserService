@@ -1,0 +1,33 @@
+
+server:
+  port: 8080 # Uygulaman?z?n çal??aca?? port (örnek olarak 8080)
+
+spring:
+  application:
+    name: poslifay # Uygulaman?z?n Eureka'ya kaydolaca?? isim
+
+  datasource: # MySQL Ba?lant? Ayarlar?
+    url: jdbc:mysql://localhost:3306/poslifayauth?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: omerutkudemir
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa: # Hibernate Ayarlar?
+    hibernate:
+      ddl-auto: create # Geli?tirme için uygun, üretimde 'none' veya 'validate'
+    show-sql: true # Konsolda SQL sorgular?n? gösterir
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect # MySQL 8 için diyalekt
+
+eureka: # Eureka Client Ayarlar? (Eureka Server'a kaydolmak için)
+  client:
+    register-with-eureka: true # Bu uygulaman?n Eureka Server'a kaydolmas?n? sa?lar
+    fetch-registry: true # Bu uygulaman?n Eureka Server'dan servis kay?tlar?n? çekmesini sa?lar
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/ # Eureka Server'?n?z?n adresi
+
+  instance:
+    prefer-ip-address: true # Eureka'ya kaydolurken hostname yerine IP adresini tercih et
+    # E?er uygulaman?z?n belirli bir hostname ile kaydolmas?n? isterseniz:
+    # hostname: ${spring.application.name} # veya statik bir hostname

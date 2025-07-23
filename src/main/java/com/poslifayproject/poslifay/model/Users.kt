@@ -8,9 +8,8 @@ import java.sql.Date
 import java.sql.Types
 import java.util.UUID
 @Entity
-data class Users(
+open class Users(
     @Id
-
     @JdbcTypeCode(Types.VARCHAR)
     val id: UUID? = UUID.randomUUID(),
     val firstName:String?,
@@ -20,11 +19,7 @@ data class Users(
     @Column(unique = true)
      val email: String?,
     private val password: String?,
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "comment_id")
-    val comments : List<Comment>?,
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val likes:List<Like>?,
+
     val birthDate: Date?,
     val createDate: Date?,
     val sex:Boolean,
@@ -42,6 +37,7 @@ data class Users(
     var enabled: Boolean ?= true,
     var accountNonLocked: Boolean? = true,
     var credentialsNonExpired: Boolean ?= true,
+
 ): UserDetails {
 
     constructor() : this(
@@ -51,8 +47,6 @@ data class Users(
         username = null,
         email = null,
         password = null,
-        comments = emptyList(),
-        likes = emptyList(),
         birthDate = null,
         createDate = Date(System.currentTimeMillis()),
         authorities= mutableSetOf(Role.ROLE_USER),
@@ -62,7 +56,8 @@ data class Users(
         credentialsNonExpired = true,
         sex=false,
         age=0,
-        userImageUrl=null
+        userImageUrl=null,
+
 
     )
     constructor(
@@ -74,15 +69,14 @@ data class Users(
         birthDate: Date,
         sex: Boolean,
         userImage:String,
-        age: Short
+        age: Short,
+
     ) : this(
         firstName = firstName,
         lastName = lastName,
         username  = userName,
         email = email,
         password = password,
-        comments = emptyList(), // Eksik alanları ekleyin
-        likes = emptyList(),
         birthDate = birthDate,
         createDate = Date(System.currentTimeMillis()),
         authorities =  mutableSetOf(Role.ROLE_USER),
@@ -92,7 +86,8 @@ data class Users(
         credentialsNonExpired = true,
         sex=sex,
         age=age,
-        userImageUrl=userImage
+        userImageUrl=userImage,
+
     )
 
     override fun getAuthorities(): Collection<GrantedAuthority?> {

@@ -3,11 +3,9 @@ package com.poslifayproject.poslifay.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +13,13 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    public static final String SECRET_KEY = "ec2c1d6d5c31546828b37ffb3fb342c04b396d58eae2465f4679d2687643ca56";
+
+    private final JwtKeyProvider keyProvider;
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 saat
 
-
+    public JwtUtil(JwtKeyProvider keyProvider) {
+        this.keyProvider = keyProvider;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -34,8 +35,9 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
+        // Token'ı doğrulamak için Public Key kullanılır
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(keyProvider.getPublicKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -47,16 +49,20 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // Token'a yetkileri (authorities) de ekleyebiliriz.
+        // claims.put("authorities", userDetails.getAuthorities());
         return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String username) {
+        // Token'ı oluştururken Private Key ile imzalarız
         return Jwts.builder()
                 .setClaims(claims)
+                .setHeaderParam("kid", keyProvider.getKeyId()) // Header'a Key ID ekliyoruz
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(keyProvider.getPrivateKey(), SignatureAlgorithm.RS256) // Algoritmayı RS256 olarak değiştiriyoruz
                 .compact();
     }
 

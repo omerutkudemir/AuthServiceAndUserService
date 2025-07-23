@@ -13,6 +13,7 @@ data class RegisterReq(
     val sex:Boolean?,
     val userImage:String?,
     val age: Short
+
 ) {
 
 }

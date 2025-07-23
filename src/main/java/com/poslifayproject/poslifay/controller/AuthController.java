@@ -1,6 +1,4 @@
 package com.poslifayproject.poslifay.controller;
-
-
 import com.poslifayproject.poslifay.dto.LogInReq;
 import com.poslifayproject.poslifay.dto.AuthResponse;
 import com.poslifayproject.poslifay.dto.LogInResponse;
@@ -33,6 +31,7 @@ public class AuthController {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+
         this.userRepository = userRepository;
     }
 
@@ -56,6 +55,7 @@ public class AuthController {
                 registerReq.getSex(),
                 registerReq.getUserImage(),
                 registerReq.getAge()
+
 
         );
 
